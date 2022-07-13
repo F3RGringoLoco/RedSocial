@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">Red Social</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -6,12 +6,18 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
+                <!--<li class="nav-item">
                     <a class="nav-link" href="{{route('post.index')}}">Publicaciones</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{route('profesional.index')}}">Profesionals</a>
+                    <a href="{{route('profesional.index')}}" class="nav-link">Profesionales</a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{route('company.index')}}" class="nav-link">Compañia</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('home')}}" class="nav-link">Home</a>
+                </li>-->
             </ul>
             <span class="navbar-text">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">

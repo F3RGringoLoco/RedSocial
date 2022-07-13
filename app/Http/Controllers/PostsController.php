@@ -5,13 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Post;
+use App\Company;
+use App\Like;
+use App\Member;
+use App\Brands;
 use DB;
 
 class PostsController extends Controller
 {
 
     function __construct(){
-        $this->middleware('auth')->only('store');
+        //$this->middleware('auth')->only('store');
     }
 
     /**
@@ -23,12 +27,22 @@ class PostsController extends Controller
     {
         $posts = DB::table('posts')
                         ->join('profesionals', 'posts.user_id', '=', 'profesionals.user_id') 
-                        ->orderBy('posts.id', 'desc')
-                        ->select('profesionals.id', 'profesionals.name', 'posts.description', 'posts.image', 
-                                'posts.likes', 'posts.shares', 'posts.comments', 
-                                'posts.created_at')
-                        //->paginate(10);
+                        ->join('companies', 'posts.company_id', '=', 'companies.com_id') 
+                        ->orderBy('posts.created_at', 'desc')
+                        ->select('profesionals.id', 'profesionals.name', 'posts.post_id', 'posts.description', 'posts.image', 
+                                'posts.shares', 'posts.created_at', 'companies.com_id', 'companies.com_name', 'companies.com_image')
                         ->get();
+
+        foreach ($posts as $pts) {
+            $count = Like::where('post_id', $pts->post_id)->count();
+            $liked = false;
+            if(Like::where([['post_id', $pts->post_id], ['user_id', Auth::id()]])->exists()){
+                $liked = true;
+            }
+            $pts->likeCount = $count;
+            $pts->liked = $liked;
+        }
+        
         return view('post.index', compact('posts'));
     }
 
@@ -52,15 +66,38 @@ class PostsController extends Controller
     {
         $this->validate($request, [
             'description' => 'required|string',
-            'image' => 'required|nullable|max:1999',
+            'image' => 'nullable|max:1999',
         ]);
 
-        $post = new Post();
-        $post->description = $request->input('description');
-        $post->user_id = Auth::id();
-        $post->save();
+        if (Member::where('user_id', Auth::id())->exists() || 
+                Company::where('owner_id', Auth::id())->exists()) {
+            $post = new Post();
+            $post->description = $request->input('description');
+            $post->user_id = Auth::id();
+            $company;
+            if (Company::where('owner_id', Auth::id())->exists()) {
+                $company = Company::where('owner_id', $post->user_id)->value('com_id');
+            }else{
+                $company = Member::where('user_id', $post->user_id)->value('company_id');
+            }
+            $post->company_id = $company;
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                $fileNameWithExt = $file->getClientOriginalName();
+                $filename = pathinfo($fileNameWithExt ,PATHINFO_FILENAME);
+                $extension = $file->getClientOriginalExtension();
+                $fileNameToStore = $filename.'_'.time().'.'.$extension;
+                $path = $file->storeAs('posts_pics/', $fileNameToStore, 's3');
 
-        return back()->with('success', 'Publicado con exito!');
+                $post->image = $fileNameToStore;
+            }
+
+            $post->save();
+
+            return back()->with('success', 'Publicado con exito!');
+        } else {
+            return back()->with('error', 'Lo sentimos, no puede publicar sin ser miembro o dueño de una empresa');
+        }
     }
 
     /**
@@ -106,5 +143,34 @@ class PostsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function likePost(Request $request)
+    {
+        if (Like::where([['post_id', $request->input('postId')], ['user_id', Auth::id()]])->exists()) {
+            $like = Like::where([['post_id', $request->input('postId')], ['user_id', Auth::id()]])->delete();
+
+            $likeCount = Like::where('post_id', $request->input('postId'))->count();
+
+            return response()->json(array('likeCount'=>$likeCount), 200);
+        }else{
+            $like = new Like();
+            $like->post_id = $request->input('postId');
+            $like->user_id = Auth::id();
+            $like->save();
+
+            $likeCount = Like::where('post_id', $like->post_id)->count();
+
+            return response()->json(array('likeCount'=>$likeCount), 200);
+        }
+    }
+
+    public function sharePost(Request $request)
+    {
+        $post = Post::findOrFail($request->input('postId'));
+        $post->shares = $post->shares + 1;
+        $post->save();
+
+        return response()->json(array('shareCount'=>$post->shares), 200);
     }
 }

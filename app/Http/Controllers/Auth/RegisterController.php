@@ -57,6 +57,7 @@ class RegisterController extends Controller
             'birth' => ['required', 'date'],
             'career' => ['required', 'string'],
             'phone' => ['required', 'numeric'],
+            'image' => ['required'],
         ]);
     }
 
@@ -72,12 +73,21 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+
+        $file = request()->file('image');
+        $fileNameWithExt = $file->getClientOriginalName();
+        $filename = pathinfo($fileNameWithExt ,PATHINFO_FILENAME);
+        $extension = $file->getClientOriginalExtension();
+        $fileNameToStore = $filename.'_'.time().'.'.$extension;
+        $path = $file->storeAs('profesionals_pics/', $fileNameToStore, 's3');
+
         Profesional::create([
             'name' =>  $data['name'],
             'birth' =>  $data['birth'],
             'phone' => $data['phone'],
             'career' => $data['career'],
             'user_id' => $user->id,
+            'image' => $fileNameToStore,
         ]);
 
         return $user;

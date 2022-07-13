@@ -1,87 +1,64 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container-fluid">
-    <div class="justify-content-around">
-        <div class="row ">
-            <div class="col">
-                <div class="card" style="overflow-y: auto;">
-                    <div class="list-group">
-                        <a href="#" class="list-group-item list-group-item-action active disabled" aria-current="true">
-                            Menú
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action">A second link item</a>
-                        <a href="#" class="list-group-item list-group-item-action">A third link item</a>
-                        <a href="#" class="list-group-item list-group-item-action">A fourth link item</a>
-                        <a href="#" class="list-group-item list-group-item-action">A fifth link item</a>
-                    </div>
-                </div>
-            </div>
+<div class="container">
+
+    @include('inc.sidenavs')
+
+    <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="card">
+                <div class="card border-light">
                     <div class="card-header">
                         @if (Auth::check())
                             <button type="button" class="btn btn-primary float-right" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                 Nueva Publicación
                             </button>
                         @endif
-                        <h3>Publicaciones</h3>
+                        <h3 class="pe-none">Publicaciones</h3>
                     </div>
-                        <div class="card-body" style="overflow-y:auto; height:80vh;">
+                        <div class="card-body" style="overflow-y:auto; height:82vh;">
                             @if (count($posts) > 0)
                                 @foreach ($posts as $pts)
-                                    <div class="card">
+                                    <div class="card" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
                                         <div class="card-header">
-                                            <small class="float-right">{{date_format(new DateTime($pts->created_at), 'F d Y - h:m a')}}</small>
-                                            <a href="{{route('profesional.show', $pts->id)}}" class="text-dark" style="text-decoration: none;">
-                                                <img src="https://d2qp0siotla746.cloudfront.net/img/use-cases/profile-picture/template_0.jpg" class="img-fluid rounded-circle float-left" alt="" width="50" height="50">
-                                                <span style="font-size: 25px; font-weight: bold;">{{$pts->name}}</span>
+                                            <small class="float-right pe-none">{{date_format(new DateTime($pts->created_at), 'F d Y - h:m a')}}</small>
+                                            <a href="{{route('company.show', $pts->com_id)}}" class="text-dark" style="text-decoration: none;">
+                                                <img src="{{$pts->com_image != null ? Storage::disk('s3')->url('companies_pics/'.$pts->com_image) : asset('storage/user_img.png')}}" class="img-fluid rounded-circle float-left" alt="" width="50" height="50">
+                                                <span style="font-size: 25px; font-weight: bold;">{{$pts->com_name}}</span>
                                             </a>
+                                            <p style="padding: 0; margin: 0;"><small>Publicado por <a class="custom-link" href="{{route('profesional.show', $pts->id)}}">{{$pts->name}}</a></small></p>
                                         </div>
                                         <div class="card-body">
                                             <p>{{$pts->description}}</p>
-                                            @if ($pts->image == '')
-                                                <img src="https://www.salleurl.edu/sites/default/files/content/nodes/View%20Page/image/4250/39448/business_and_management_la_salle_campus_barcelona.jpg" class="img-fluid" alt="" width="100%" height="300">
+                                            @if ($pts->image != null)
+                                                <img src="{{Storage::disk('s3')->url('posts_pics/'.$pts->image)}}" class="img-fluid" alt="" width="100%" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
                                             @endif
                                         </div>
                                         <div class="card-footer">
-                                            
                                                 <div class="float-left">
                                                     @if (Auth::check())
-                                                        <a href="#" class="text-secondary" style="text-decoration: none;">Me gusta <i class="fa fa-solid fa-thumbs-up"></i></a>
-                                                        <span>  |  </span>    
-                                                        <a href="#" class="text-secondary" style="text-decoration: none;">Comentar <i class="fa fa-solid fa-comment"></i></a>
-                                                        <span>  |  </span>    
+                                                        <h6 id="btnLike{{$pts->post_id}}" style="text-align: center;display: inline-block;cursor: pointer; color:{{$pts->liked ? '#202A44' : '#7B7B7C' }}" onclick="likePost({{$pts->post_id}})">Me gusta <i class="fa fa-solid fa-thumbs-up"></i></h6>
+                                                        <span class="pe-none">  |  </span>    
                                                     @endif
-                                                    <a href="#" class="text-secondary" style="text-decoration: none;">Compartir <i class="fa fa-solid fa-share-alt"></i></a>
+                                                    <span class="custom1-link" onclick="sharePost({{$pts->post_id}})">Compartir <i class="fa fa-solid fa-share-alt"></i></span>
                                                 </div>
                                                 <div class="float-right">
-                                                    <small class="text-secondary">Me gusta {{$pts->likes}}  |  Compartidos {{$pts->shares}}  |  Comentarios {{$pts->comments}}</small>
+                                                    <span class="pe-none text-secondary">Me gusta <span id="likes{{$pts->post_id}}">{{$pts->likeCount}}</span></span>
+                                                    <small class="pe-none text-secondary"> | </small>  
+                                                    <span class="pe-none text-secondary">Compartidos <span id="shares{{$pts->post_id}}">{{$pts->shares}}</span></span>
                                                 </div>
                                         </div>
                                     </div>
                                     <br>
                                 @endforeach
-                                <p class="text-center text-primary">Fin de Publicaciones</p>
+                                <p class="pe-none text-center text-primary">Fin de Publicaciones</p>
                             @else
                                 <h3 class="text-center">No hay publicaciones para mostrar</h3>
                             @endif
                     </div>
                 </div>
             </div>
-            <div class="col">
-                <div class="card">
-                    <div class="card-header">
-                        Contactos
-                    </div>
-                    <ol class="list-group list-group-numbered" style="overflow-y: auto;">
-                        <li class="list-group-item">A list item</li>
-                        <li class="list-group-item">A list item</li>
-                        <li class="list-group-item">A list item</li>
-                    </ol>
-                </div>
-            </div>
-          </div>
+        </div>
     </div>
 </div>
 
@@ -103,9 +80,9 @@
                     </div>
                     <div class="form-group">
                         <label for="image">{{ __('Imagen') }}</label>
-                        <input class="form-control" value="{{ old('image') }}" type="file" id="image" name="image" accept="image/*" required>
-
+                        <input class="form-control" value="{{ old('image') }}" type="file" id="image" name="image" accept="image/*">
                     </div>
+                    
                     <div class="float-right">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn btn-primary">Publicar</button>
@@ -115,6 +92,6 @@
       </div>
     </div>
   </div>
-
-
 @endsection
+
+@include('inc.likeable')

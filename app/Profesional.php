@@ -9,6 +9,6 @@ class Profesional extends Model
     protected $table = 'profesionals';
 
     protected $fillable = [
-        'name', 'birth', 'phone', 'career', 'user_id',
+        'name', 'birth', 'phone', 'career', 'user_id', 'image'
     ];
 }

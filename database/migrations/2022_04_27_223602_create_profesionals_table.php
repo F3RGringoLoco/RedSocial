@@ -19,6 +19,9 @@ class CreateProfesionalsTable extends Migration
             $table->date('birth');
             $table->string('phone');
             $table->string('career');
+            $table->boolean('status')->default(false);
+            $table->string('bg_image')->nullable();
+            $table->string('image')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
         });
