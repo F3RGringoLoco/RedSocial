@@ -7,7 +7,7 @@
             <div class="card" style="background-color: #28282B; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
                 <div class="card-body">
                     <div class="title">
-                        <h3 class="texto-bienvenida">CHOLAAAAA!</h3>
+                        <h3 class="texto-bienvenida">Red Social Empresarial</h3>
                     </div>
                     <div class="text-properties">
                         <div id="text-slide">Potencia</div> 
