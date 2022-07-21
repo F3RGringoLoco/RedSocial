@@ -11,11 +11,11 @@
             <div class="col-md-8 mx-auto"> <!-- Profile widget --> 
                 <div class="bg-white shadow rounded overflow-hidden"> 
                     <!--<div class="px-4 pt-0 pb-4 cover" style="background-image: url(https://images.pexels.com/photos/459225/pexels-photo-459225.jpeg?auto=compress&cs=tinysrgb&h=650&w=940);"> -->
-                    <div class="px-4 pt-0 pb-4 cover" style="background-image: url('{{$company->bg_image != null ?  Storage::disk('s3')->url('companies_bg/'.$company->bg_image) : asset('storage/cover_img1.jpeg')}}');">
+                    <div class="px-4 pt-0 pb-4 cover" style="background-image: url('{{$company->bg_image != null ?  Storage::disk('s3')->url('companies_bg/'.$company->bg_image) : 'https://pbs.twimg.com/profile_images/1363910175703199751/Yw_biOmN_400x400.jpg'}}');">
                         <div class="media align-items-end profile-head"> 
                             <div class="profile mr-3">
                                 <!--<img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80" alt="..." width="130" class="rounded mb-2 img-thumbnail">-->
-                                <img src="{{$company->com_image != null ? Storage::disk('s3')->url('companies_pics/'.$company->com_image) : asset('storage/user_img.png')}}" alt="..." width="130" class="rounded mb-2 img-thumbnail">
+                                <img src="{{$company->com_image != null ? Storage::disk('s3')->url('companies_pics/'.$company->com_image) : 'https://www.pavilionweb.com/wp-content/uploads/2017/03/man-300x300.png'}}" alt="..." width="130" class="rounded mb-2 img-thumbnail">
                                 <div class="dropdown">
                                     <button class="btn btn btn-outline-dark btn-sm btn-block dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                         Opciones

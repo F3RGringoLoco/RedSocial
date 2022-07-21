@@ -6,8 +6,8 @@
         <div class="col-md-8">
             <div class="card-group">
                 <div class="card">
-                    <!--<img src="https://us.123rf.com/450wm/hasloo/hasloo1407/hasloo140701165/29711370-hombre-de-negocios-con-exceso-de-trabajo-burnout-sin-cabeza-de-pie-con-bombilla-explot%C3%B3-en-lugar-de-.jpg?ver=6" class="card-img" alt="...">-->
-                    <img src="{{asset('storage/login_img.jpeg')}}" class="card-img" alt="...">
+                    <img src="https://us.123rf.com/450wm/hasloo/hasloo1407/hasloo140701165/29711370-hombre-de-negocios-con-exceso-de-trabajo-burnout-sin-cabeza-de-pie-con-bombilla-explot%C3%B3-en-lugar-de-.jpg?ver=6" class="card-img" alt="...">
+                    <!--<img src="{{asset('storage/login_img.jpeg')}}" class="card-img" alt="...">-->
                     <div class="card-img-overlay">
                         <h3 class="card-title text-white text-center">Bienvenido</h3>
                     </div>

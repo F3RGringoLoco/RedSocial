@@ -55,7 +55,7 @@
                     <a href="{{route('profesional.show', $recom->id)}}" class="list-group-item list-group-item-action">
                         <div class="d-flex w-100 justify-content-between">
                             <div>
-                                <img class="img-fluid rounded-circle float-left" src="{{$recom->image != null ? Storage::disk('s3')->url('profesionals_pics/'.$recom->image) : asset('storage/user_img.png')}}" alt="" width="40" height="40">
+                                <img class="img-fluid rounded-circle float-left" src="{{$recom->image != null ? Storage::disk('s3')->url('profesionals_pics/'.$recom->image) : 'https://www.pavilionweb.com/wp-content/uploads/2017/03/man-300x300.png'}}" alt="" width="40" height="40">
                                 <h5 style="white-space: nowrap;">{{$recom->name}}</h5>
                             </div>
                             <small class="text-muted">Edad : {{\Carbon\Carbon::now()->diffInYears($recom->birth)}}</small>

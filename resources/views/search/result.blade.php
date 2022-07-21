@@ -21,7 +21,7 @@
                                 <a href="{{route('company.show', $cmp->com_id)}}" class="list-group-item list-group-item-action">
                                     <div class="d-flex w-100 justify-content-between">
                                         <div>
-                                            <img class="img-fluid rounded-circle float-left" src="{{$cmp->com_image != null ? Storage::disk('s3')->url('companies_pics/'.$cmp->com_image) : asset('storage/user_img.png')}}" alt="" width="40" height="40">
+                                            <img class="img-fluid rounded-circle float-left" src="{{$cmp->com_image != null ? Storage::disk('s3')->url('companies_pics/'.$cmp->com_image) : 'https://www.pavilionweb.com/wp-content/uploads/2017/03/man-300x300.png'}}" alt="" width="40" height="40">
                                             <h5 class="mb-1" style="white-space: nowrap;">{{$cmp->com_name}}</h5>
                                         </div>
                                         <div>

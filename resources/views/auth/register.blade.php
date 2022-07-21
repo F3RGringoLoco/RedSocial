@@ -6,8 +6,8 @@
         <div class="col-md-12">
             <div class="card-group">
                 <div class="card">
-                    <!--<img src="https://thumbs.dreamstime.com/b/hombre-de-negocios-sobre-fondo-negro-negocio-y-concepto-de-la-oficina-91767339.jpg" class="card-img" alt="...">-->
-                    <img src="{{asset('storage/register_img.jpeg')}}" class="card-img" alt="...">
+                    <img src="https://thumbs.dreamstime.com/b/hombre-de-negocios-sobre-fondo-negro-negocio-y-concepto-de-la-oficina-91767339.jpg" class="card-img" alt="...">
+                    <!--<img src="{{asset('storage/register_img.jpeg')}}" class="card-img" alt="...">-->
                     <div class="card-img-overlay">
                         <h3 class="card-title text-white text-center">Bienvenido</h3>
                     </div>

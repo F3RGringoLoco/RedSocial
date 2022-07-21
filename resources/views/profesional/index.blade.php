@@ -24,7 +24,7 @@
                                     <td>
                                         <div class="card">
                                             <div class="card-body">
-                                                <img class="img-fluid rounded-circle float-left" src="{{$prof->image != null ? Storage::disk('s3')->url('profesionals_pics/'.$prof->image) : asset('storage/user_img.png')}}" alt="" width="100" height="100">
+                                                <img class="img-fluid rounded-circle float-left" src="{{$prof->image != null ? Storage::disk('s3')->url('profesionals_pics/'.$prof->image) : 'https://www.pavilionweb.com/wp-content/uploads/2017/03/man-300x300.png'}}" alt="" width="100" height="100">
                                                 <h5 class="float-right">Edad: {{\Carbon\Carbon::now()->diffInYears($prof->birth)}}</h5>
                                                 <h3>{{$prof->name}}</h3>
                                                 <small>Profesión: {{$prof->career}}</small>
