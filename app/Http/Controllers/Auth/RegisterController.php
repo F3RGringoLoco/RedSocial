@@ -9,6 +9,7 @@ use App\Profesional;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\TraitsRecombeeController;
 
 class RegisterController extends Controller
 {
@@ -80,6 +81,10 @@ class RegisterController extends Controller
         $extension = $file->getClientOriginalExtension();
         $fileNameToStore = $filename.'_'.time().'.'.$extension;
         $path = $file->storeAs('profesionals_pics/', $fileNameToStore, 's3');
+
+        $str = strval($user->id);
+        app('App\Http\Controllers\TraitsRecombeeController')->addUser($str);
+        app('App\Http\Controllers\TraitsProfController')->addUser($str);
 
         Profesional::create([
             'name' =>  $data['name'],

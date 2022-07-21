@@ -2,6 +2,8 @@
     <script>
         $(document).ready(function() {
             $('#example').DataTable({
+                    scrollY: '65vh',
+                    scrollCollapse: true,
                     "language": {
                         "sProcessing":     "Procesando...",
                         "sLengthMenu":     "Mostrar _MENU_ registros",

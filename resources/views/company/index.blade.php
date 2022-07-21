@@ -160,10 +160,9 @@
                         </div>
                         <div class="collapse" id="rel-data">
                             <div class="col p-4 rounded bg-light" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);"> 
-                                @if (!empty($contacts1) || !empty($contacts2))
+                                @if (!empty($contacts1))
                                     <div class="container">
                                         <div class="row g-2">
-                                            @if (!empty($contacts1))
                                                 @foreach ($contacts1 as $cont)
                                                     <div class="col-6">
                                                         <a href="{{route('company.show', $cont->com_id)}}" class="text-dark" style="text-decoration: none;">
@@ -173,18 +172,6 @@
                                                         </a>
                                                     </div>
                                                 @endforeach
-                                            @endif
-                                            @if (!empty($contacts2))
-                                                @foreach ($contacts2 as $cont)
-                                                    <div class="col-6">
-                                                        <a href="{{route('company.show', $cont->com_id)}}" class="text-dark" style="text-decoration: none;">
-                                                            <img src="{{Storage::disk('s3')->url('companies_pics/'.$cont->com_image)}}" class="img-fluid rounded-circle float-left" alt="" width="60" height="60">
-                                                            <p style="font-size: 1.2vw;">{{$cont->com_name}} <small class="text-muted" style="font-size: 0.7vw;"> {{$cont->location}} <i class="fas fa-map-marker-alt mr-2"></i></small></p>
-                                                            <small class="text-muted">{{date_format(new DateTime($cont->created_at), 'F d Y - h:m a')}}</small>
-                                                        </a>
-                                                    </div>
-                                                @endforeach
-                                            @endif
                                         </div>
                                     </div>
                                 @else

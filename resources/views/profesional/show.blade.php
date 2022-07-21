@@ -136,7 +136,7 @@
                         <a href="{{route('profesional.show', $follower->id)}}" class="list-group-item list-group-item-action">
                             <div class="d-flex justify-content-start">
                                 <div class="align-self-start">
-                                    <img class="rounded-circle" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/488320/profile/profile-80.jpg">
+                                    <img class="rounded-circle" src="{{$follower->image != null ? Storage::disk('s3')->url('profesionals_pics/'.$follower->image) : asset('storage/user_img.png')}}" width="70px">
                                 </div>
                                 <div class="align-self-center">
                                     <h4>{{$follower->name}}</h4>

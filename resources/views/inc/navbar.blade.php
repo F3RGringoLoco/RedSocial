@@ -31,6 +31,14 @@
                             </li>
                         @endif
                     @else
+                        <form method="GET" action="{{route('search')}}">
+                            @csrf
+                            <div class="searchbar me-5">
+                                <input name="texto" class="search_input" type="text" placeholder="Buscar...">
+                                <button type="submit" class="search_icon"><i class="fas fa-search"></i></button>
+                            </div>
+                        </form>
+
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 {{ Auth::user()->email }}
@@ -40,7 +48,7 @@
                                 <a class="dropdown-item text-dark" href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
                                                 document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
+                                    {{ __('Cerrar Sesión') }}
                                 </a>
     
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

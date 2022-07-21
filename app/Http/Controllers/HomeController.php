@@ -43,15 +43,40 @@ class HomeController extends Controller
         $accept->accepted = true;
         $accept->save();
 
+        $contact = new Contact();
+        $contact->relate_id = $company;
+        $contact->company_id = $request->input('acceptCompany');
+        $contact->sended = true;
+        $contact->accepted = true;
+        $contact->save();
+
         return redirect()->route('home');
     }
 
     public function rejectRequest(Request $request){
         $company = Company::where('owner_id', Auth::id())->value('com_id');
-        $accept = DB::table('contacts')
+        DB::table('contacts')
                         ->where([['company_id', $company], ['relate_id', $request->input('rejectCompany')]])
                         ->delete();
 
         return redirect()->route('home');
+    }
+
+    public function search(Request $request){
+        if (empty($request->input('texto'))) {
+            return back()->with('error', 'Campo buscar vacio');
+        } else {
+            $prof = DB::table('profesionals')
+                        ->where('name', 'LIKE', '%'.$request->input('texto').'%') 
+                        ->orWhere('career', 'LIKE', '%'.$request->input('texto').'%')
+                        ->select('id', 'name', 'birth', 'career', 'image')
+                        ->get();
+            $comp =  DB::table('companies')
+                        ->where('com_name', 'LIKE', '%'.$request->input('texto').'%') 
+                        ->orWhere('description', 'LIKE', '%'.$request->input('texto').'%')
+                        ->select('com_id', 'com_name', 'description', 'created_at', 'com_image')
+                        ->get();
+            return view('search.result', compact('prof', 'comp'));
+        }
     }
 }

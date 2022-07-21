@@ -63,39 +63,44 @@
             </div>
         </div>
     </div>
-    <br><hr>
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-        <div class="col">
-            <div class="card h-100">
-                <div class="card-body">
-                    <canvas id="Donut"></canvas>
+    <br>
+    <div class="row justify-content-center">
+        <hr class="col-md-8">
+        <div class="col-md-8">
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <canvas id="Donut"></canvas>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">Last updated 3 mins ago</small>
+                    </div>
                 </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <canvas id="Polar"></canvas>    
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">Last updated 3 mins ago</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <canvas id="Radar"></canvas>     
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">Last updated 3 mins ago</small>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col">
-            <div class="card h-100">
-                <div class="card-body">
-                    <canvas id="Polar"></canvas>    
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
-        </div>
-        <div class="col">
-            <div class="card h-100">
-                <div class="card-body">
-                    <canvas id="Radar"></canvas>     
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Last updated 3 mins ago</small>
-                </div>
-            </div>
-        </div>
-      </div>
+    </div>
+</div>
 </div>
 @endsection
 

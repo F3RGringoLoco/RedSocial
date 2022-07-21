@@ -28,6 +28,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::post('/accept-request', 'HomeController@acceptRequest')->name('acceptRequest');
 Route::post('/reject-request', 'HomeController@rejectRequest')->name('rejectRequest');
 
+Route::get('/search', 'HomeController@search')->name('search');
 
 Route::middleware(['auth'],)->group(function(){
     //Profesionales

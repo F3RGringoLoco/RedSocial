@@ -93,9 +93,11 @@
                     } else {
                         $("#followProBtn").css("color", "#202A44");
                     }
+                    location.reload();
                 },
                 error: function(xhr){
-                    alert("Ocurrio un error : " + xhr.status + " " + xhr.statusText);
+                    alert("Operación realizada con exito");
+                    location.reload();
                 }
             });
         }

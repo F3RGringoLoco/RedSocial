@@ -186,6 +186,47 @@
             border: 3% solid #f1f1f1;
             z-index: 9;
         }
+
+        .searchbar{
+            height: 100%;
+            background-color: #353b48;
+            border-radius: 30px;
+        }
+
+        .search_input{
+            color: white;
+            border: 0;
+            outline: 0;
+            background: none;
+            width: 0;
+            caret-color:transparent;
+            line-height: 40px;
+            transition: width 0.4s linear;
+        }
+
+        .searchbar:hover > .search_input{
+            padding: 0 10px;
+            width: 450px;
+            caret-color:red;
+            transition: width 0.4s linear;
+        }
+
+        .searchbar:hover > .search_icon{
+            background: white;
+            color: #e74c3c;
+        }
+
+        .search_icon{
+            height: 100%;
+            width: 40px;
+            float: right;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            color:red;
+            text-decoration:none;
+        }
     </style>
 
     <!--Bootstrap CSS-->
@@ -207,7 +248,6 @@
             @yield('content')
 
         </div>
-
 
         <button class="btn btn-outline-dark open-button" onclick="openForm()">Chat Bot</button>
 

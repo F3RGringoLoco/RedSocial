@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "369cea8c9abe4ea28887e42048b20674",
+    "content-hash": "ca964cd8cb39cd0d76c793999b0f8b2c",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -3159,6 +3159,52 @@
                 }
             ],
             "time": "2021-09-25T23:10:38+00:00"
+        },
+        {
+            "name": "recombee/php-api-client",
+            "version": "v4.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/recombee/php-api-client.git",
+                "reference": "03a4762cc17fcc193b136a40c53d10da59887413"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/recombee/php-api-client/zipball/03a4762cc17fcc193b136a40c53d10da59887413",
+                "reference": "03a4762cc17fcc193b136a40c53d10da59887413",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.0.0 || ^7.0.0",
+                "php": ">=7.2.0"
+            },
+            "require-dev": {
+                "phpdocumentor/phpdocumentor": "2.*",
+                "phpunit/phpunit": "^9.2.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Recombee\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ondřej Fiedler",
+                    "email": "ondrej.fiedler@recombee.com"
+                }
+            ],
+            "description": "PHP client for easy use of the Recombee recommendation API.",
+            "homepage": "https://recombee.com",
+            "support": {
+                "issues": "https://github.com/recombee/php-api-client/issues",
+                "source": "https://github.com/recombee/php-api-client/tree/v4.0.0"
+            },
+            "time": "2022-04-20T14:11:36+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",

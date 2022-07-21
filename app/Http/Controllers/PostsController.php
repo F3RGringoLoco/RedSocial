@@ -9,6 +9,7 @@ use App\Company;
 use App\Like;
 use App\Member;
 use App\Brands;
+use App\TraitsRecombee;
 use DB;
 
 class PostsController extends Controller
@@ -53,7 +54,8 @@ class PostsController extends Controller
      */
     public function create()
     {
-        //
+        app('App\Http\Controllers\TraitsProfController')->addItem("12");
+        return back();
     }
 
     /**
@@ -94,6 +96,9 @@ class PostsController extends Controller
 
             $post->save();
 
+            $ptid = strval($post->post_id);
+            app('App\Http\Controllers\TraitsRecombeeController')->addItem($ptid);
+
             return back()->with('success', 'Publicado con exito!');
         } else {
             return back()->with('error', 'Lo sentimos, no puede publicar sin ser miembro o dueño de una empresa');
@@ -108,7 +113,23 @@ class PostsController extends Controller
      */
     public function show($id)
     {
-        //
+        $pts = DB::table('posts')
+                        ->join('profesionals', 'posts.user_id', '=', 'profesionals.user_id') 
+                        ->join('companies', 'posts.company_id', '=', 'companies.com_id') 
+                        ->where('post_id', $id)
+                        ->select('profesionals.id', 'profesionals.name', 'posts.post_id', 'posts.description', 'posts.image', 
+                                'posts.shares', 'posts.created_at', 'companies.com_id', 'companies.com_name', 'companies.com_image')
+                        ->first();
+
+        $count = Like::where('post_id', $pts->post_id)->count();
+        $liked = false;
+        if(Like::where([['post_id', $pts->post_id], ['user_id', Auth::id()]])->exists()){
+            $liked = true;
+        }
+        $pts->likeCount = $count;
+        $pts->liked = $liked;
+
+        return view('post.view', compact('pts'));
     }
 
     /**
@@ -152,6 +173,10 @@ class PostsController extends Controller
 
             $likeCount = Like::where('post_id', $request->input('postId'))->count();
 
+            $usid = strval(Auth::id());
+            $ptid = strval($request->input('postId'));
+            app('App\Http\Controllers\TraitsRecombeeController')->delPostLiked($usid, $ptid);
+
             return response()->json(array('likeCount'=>$likeCount), 200);
         }else{
             $like = new Like();
@@ -160,6 +185,10 @@ class PostsController extends Controller
             $like->save();
 
             $likeCount = Like::where('post_id', $like->post_id)->count();
+
+            $usid = strval($like->user_id);
+            $ptid = strval($request->input('postId'));
+            app('App\Http\Controllers\TraitsRecombeeController')->postLiked($usid, $ptid);
 
             return response()->json(array('likeCount'=>$likeCount), 200);
         }
@@ -170,6 +199,10 @@ class PostsController extends Controller
         $post = Post::findOrFail($request->input('postId'));
         $post->shares = $post->shares + 1;
         $post->save();
+
+        $usid = strval(Auth::id());
+        $ptid = strval($post->post_id);
+        app('App\Http\Controllers\TraitsRecombeeController')->postView($usid, $ptid);
 
         return response()->json(array('shareCount'=>$post->shares), 200);
     }

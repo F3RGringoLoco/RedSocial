@@ -64,13 +64,14 @@ class ProfesionalsController extends Controller
         }
         $profesional->followed = $followed;
         $following = DB::table('follow_profs')
-                                ->join('profesionals', 'follow_profs.following_id', '=', 'profesionals.id')
-                                ->where('following_id', $id)
+                                ->join('profesionals', 'follow_profs.following_id', '=', 'profesionals.user_id')
+                                ->where('follower_id', $id)
                                 ->select('profesionals.id', 'profesionals.name', 'profesionals.career', 'profesionals.image')
                                 ->get();
+
         $followers =DB::table('follow_profs')
-                                ->join('profesionals', 'follow_profs.follower_id', '=', 'profesionals.id')
-                                ->where('follower_id', $id)
+                                ->join('profesionals', 'follow_profs.follower_id', '=', 'profesionals.user_id')
+                                ->where('following_id', $id)
                                 ->select('profesionals.id', 'profesionals.name', 'profesionals.career', 'profesionals.image')
                                 ->get();
                                 
@@ -91,6 +92,10 @@ class ProfesionalsController extends Controller
             $pts->likeCount = $count;
             $pts->liked = $liked;
         }
+
+        $usid = strval(Auth::id());
+        $usitem = strval($profesional->id);
+        app('App\Http\Controllers\TraitsProfController')->userView($usid, $usitem);
         
         return view('profesional.show', compact('profesional', 'email', 'followers', 'following', 'posts'));
     }
@@ -133,11 +138,19 @@ class ProfesionalsController extends Controller
     {
         if (FollowProf::where([['following_id', $request->input('profesionalId')], ['follower_id', Auth::id()]])->exists()) {
             FollowProf::where([['following_id', $request->input('profesionalId')], ['follower_id', Auth::id()]])->delete();
+
+            $usid = strval(Auth::id());
+            $ptid = strval( $request->input('profesionalId'));
+            app('App\Http\Controllers\TraitsProfController')->delUserLiked($usid, $ptid);
         }else{
             $follow = new FollowProf();
             $follow->following_id = $request->input('profesionalId');
             $follow->follower_id = Auth::id();
             $follow->save();
+
+            $usid = strval(Auth::id());
+            $ptid = strval($request->input('profesionalId'));
+            app('App\Http\Controllers\TraitsProfController')->userLiked($usid, $ptid);
         }
         $followsCount = FollowProf::where('company_id', $request->input('companyId'))->count();
 

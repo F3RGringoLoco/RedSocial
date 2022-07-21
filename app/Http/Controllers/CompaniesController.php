@@ -26,7 +26,7 @@ class CompaniesController extends Controller
         $company = Company::where('owner_id', Auth::id())->where('status', false)->first();
         $brands = null;
         $contacts1 = null;
-        $contacts2 = null;
+        //$contacts2 = null;
         $owner = null;
         $follows = null;
         $members = null;
@@ -49,22 +49,22 @@ class CompaniesController extends Controller
             }
             if (Contact::where([['relate_id', $company->com_id], ['accepted', true]])->exists()) {
                 $contacts1 = DB::table('contacts')
-                            ->join('companies', 'contacts.company_id', '=', 'companies.com_id') 
-                            ->where('accepted', true)
+                            ->join('companies', 'contacts.company_id', '=', 'companies.com_id')
+                            ->where([['relate_id', $company->com_id], ['accepted', true]])
                             ->select('companies.com_id', 'companies.com_name', 'companies.location', 'companies.com_image', 'contacts.created_at')
                             ->get();
             }
-            if (Contact::where([['company_id', '=', $company->com_id], ['accepted', true]])->exists()) {
+            /*if (Contact::where([['company_id', '=', $company->com_id], ['accepted', true]])->exists()) {
                 $contacts2 = DB::table('contacts')
                             ->join('companies', 'contacts.relate_id', '=', 'companies.com_id') 
                             ->where('accepted', true)
                             ->select('companies.com_id', 'companies.com_name', 'companies.location', 'companies.com_image', 'contacts.created_at')
                             ->get();
-            }
+            }*/
             if (Follow::where('company_id', $company->com_id)->exists()) {
                 $list = Follow::where('company_id', $company->com_id)->pluck('follower_id');
                 $follows = DB::table('profesionals')
-                            ->whereIn('id', $list)
+                            ->whereIn('user_id', $list)
                             ->select('id', 'name', 'image', 'career')
                             ->get();
             }
@@ -90,7 +90,7 @@ class CompaniesController extends Controller
             }
         }
 
-        return view('company.index', compact('company', 'brands', 'contacts1', 'contacts2', 'owner', 'follows', 'members', 'posts'));
+        return view('company.index', compact('company', 'brands', 'contacts1', 'owner', 'follows', 'members', 'posts'));
     }
 
     /**
@@ -159,12 +159,12 @@ class CompaniesController extends Controller
         }
         $company->followed = $followed;
         $owner = DB::table('profesionals')
-                            ->where('id', $company->owner_id)
+                            ->where('user_id', $company->owner_id)
                             ->select('id', 'name')
                             ->first();
         $brands = null;
         $contacts1 = null;
-        $contacts2 = null;
+        //$contacts2 = null;
         $follows = null;
         $members = null;
         $posts = null;
@@ -183,24 +183,25 @@ class CompaniesController extends Controller
             if (Contact::where([['relate_id', $company->com_id], ['accepted', true]])->exists()) {
                 $contacts1 = DB::table('contacts')
                             ->join('companies', 'contacts.company_id', '=', 'companies.com_id') 
-                            ->where('accepted', true)
+                            ->where([['relate_id', $company->com_id],['accepted', true]])
                             ->select('companies.com_id', 'companies.com_name', 'companies.location', 'companies.com_image', 'contacts.created_at')
                             ->get();
             }
-            if (Contact::where([['company_id', '=', $company->com_id], ['accepted', true]])->exists()) {
+            /*if (Contact::where([['company_id', '=', $company->com_id], ['accepted', true]])->exists()) {
                 $contacts2 = DB::table('contacts')
                             ->join('companies', 'contacts.relate_id', '=', 'companies.com_id') 
                             ->where('accepted', true)
                             ->select('companies.com_id', 'companies.com_name', 'companies.location', 'companies.com_image', 'contacts.created_at')
                             ->get();
-            }
+            }*/
             if (Follow::where('company_id', $id)->exists()) {
                 $list = Follow::where('company_id', $id)->pluck('follower_id');
                 $follows = DB::table('profesionals')
-                            ->whereIn('id', $list)
+                            ->whereIn('user_id', $list)
                             ->select('id', 'name', 'image', 'career')
                             ->get();
             }
+            
             if (Member::where('company_id', $id)->exists()) {
                 $list = Member::where('company_id', $id)->pluck('user_id');
                 $members = DB::table('profesionals')
@@ -229,7 +230,7 @@ class CompaniesController extends Controller
             }
         }
         
-        return view('company.show', compact('company', 'brands', 'owner', 'contacts1', 'contacts2', 'follows', 'members', 'posts'));
+        return view('company.show', compact('company', 'brands', 'owner', 'contacts1', 'follows', 'members', 'posts'));
     }
 
     /**
@@ -332,17 +333,18 @@ class CompaniesController extends Controller
         $msg = "";
         if (Company::where('owner_id', Auth::id())->exists()) {
             $company = Company::where('owner_id', Auth::id())->value('com_id');
-            if (Contact::where([['relate_id', $company], ['company_id', $request->input('companyId')], ['sended', true], ['accepted', true]])->exists() ||
-                    Contact::where([['relate_id', $request->input('companyId')], ['company_id', $company], ['sended', true], ['accepted', true]])->exists()) {
-                if (Contact::where([['relate_id', $company], ['company_id', $request->input('companyId')]])->exists()) {
+            if (Contact::where([['relate_id', $company], ['company_id', $request->input('companyId')], ['sended', true], ['accepted', true]])->exists()){
+                 //||Contact::where([['relate_id', $request->input('companyId')], ['company_id', $company], ['sended', true], ['accepted', true]])->exists()) {
+                //if (Contact::where([['relate_id', $company], ['company_id', $request->input('companyId')]])->exists()) {
                     Contact::where([['relate_id', $company], ['company_id', $request->input('companyId')]])->delete();
-                }else{
                     Contact::where([['relate_id', $request->input('companyId')], ['company_id', $company]])->delete();
-                }
+                /*}else{
+                    Contact::where([['relate_id', $request->input('companyId')], ['company_id', $company]])->delete();
+                }*/
                 $msg = "Contacto eliminado con exito";
             }else {
-                if (Contact::where([['relate_id', $company], ['company_id', $request->input('companyId')], ['sended', true], ['accepted', false]])->exists() ||
-                        Contact::where([['relate_id', $request->input('companyId')], ['company_id', $company], ['sended', true], ['accepted', false]])->exists()){
+                if (Contact::where([['relate_id', $company], ['company_id', $request->input('companyId')], ['sended', true], ['accepted', false]])->exists()){ 
+                    //||Contact::where([['relate_id', $request->input('companyId')], ['company_id', $company], ['sended', true], ['accepted', false]])->exists()){
                     $msg = "Solicitud en espera";
                 }else{
                     $contact = new Contact();

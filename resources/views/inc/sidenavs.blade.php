@@ -5,7 +5,7 @@
             @if (Auth::check())
                     <a href="#" class="list-group-item list-group-item-action disabled">
                         <img src="https://d2qp0siotla746.cloudfront.net/img/use-cases/profile-picture/template_0.jpg" class="img-fluid rounded-circle float-left" alt="" width="35" height="35">
-                        <h3>Menu</h3>
+                        <h3 class="text-primary">Menu</h3>
                     </a>
                     <a href="{{route('home')}}" class="list-group-item list-group-item-action">Inicio</a>
                     <a href="{{route('company.index')}}" class="list-group-item list-group-item-action">Mi Empresa</a>
@@ -22,32 +22,48 @@
     </div>
 
 
+    @php
+        $usid = strval(Auth::id());
+        $recommendation = app('App\Http\Controllers\TraitsRecombeeController')->recommendations($usid);
+        $recomprofile = app('App\Http\Controllers\TraitsProfController')->recommendations($usid);
+    @endphp
     <div class="sidenav-right">
         <div class="list-group list-group-flush">
-            <a href="#" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">List group item heading</h5>
-                <small class="text-muted">3 days ago</small>
-            </div>
-            <p class="mb-1">Some placeholder content in a paragraph.</p>
-            <small>And some small print.</small>
-            </a>
-            <a href="#" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">List group item heading</h5>
-                <small class="text-muted">3 days ago</small>
-            </div>
-            <p class="mb-1">Some placeholder content in a paragraph.</p>
-            <small class="text-muted">And some muted small print.</small>
-            </a>
-            <a href="#" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">List group item heading</h5>
-                <small class="text-muted">3 days ago</small>
-            </div>
-            <p class="mb-1">Some placeholder content in a paragraph.</p>
-            <small class="text-muted">And some muted small print.</small>
-            </a>
+            @if (!empty($recommendation))
+                <a href="#" class="list-group-item list-group-item-action disabled" aria-current="true">
+                    <div class="d-flex w-100">
+                    <h5 class="mb-1 text-primary">Publicaciones recomendadas</h5>
+                    </div>
+                </a>
+                @foreach ($recommendation as $recom)
+                    <a href="{{route('post.show', $recom->post_id)}}" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">{{$recom->com_name}}</h5>
+                            <small class="text-muted">{{$recom->created_at}}</small>
+                        </div>
+                        <p class="mb-1">{{$recom->description}}</p>
+                    </a>
+                @endforeach
+            @endif
+            @if (!empty($recomprofile))
+                <a href="#" class="list-group-item list-group-item-action disabled" aria-current="true">
+                    <div class="d-flex w-100">
+                    <h5 class="mb-1 text-primary">Perfiles recomendados</h5>
+                    </div>
+                </a>
+                @foreach ($recomprofile as $recom)
+                    <a href="{{route('profesional.show', $recom->id)}}" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <div>
+                                <img class="img-fluid rounded-circle float-left" src="{{$recom->image != null ? Storage::disk('s3')->url('profesionals_pics/'.$recom->image) : asset('storage/user_img.png')}}" alt="" width="40" height="40">
+                                <h5 style="white-space: nowrap;">{{$recom->name}}</h5>
+                            </div>
+                            <small class="text-muted">Edad : {{\Carbon\Carbon::now()->diffInYears($recom->birth)}}</small>
+                        </div>
+                        <p class="mb-1 ">{{$recom->career}}</p>
+                    </a>
+                @endforeach
+            @endif
         </div>
     </div>
 </div>

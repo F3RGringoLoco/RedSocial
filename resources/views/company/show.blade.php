@@ -143,15 +143,15 @@
                     </div>
                     <div class="collapse" id="rel-data">
                         <div class="col p-4 rounded bg-light" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);"> 
-                            @if (!empty($contacts))
-                                <p class="mb-0">Mostrando sus relaciones</p> 
+                            @if (!empty($contacts1))
                                 <div class="container">
                                     <div class="row g-2">
-                                        @foreach ($contacts as $cont)
+                                        @foreach ($contacts1 as $cont)
                                             <div class="col-6">
-                                                <a href="{{route('brand.edit', $cont->id)}}" class="text-dark" style="text-decoration: none;">
-                                                    <img src="https://d2qp0siotla746.cloudfront.net/img/use-cases/profile-picture/template_0.jpg" class="img-fluid rounded-circle float-left" alt="" width="45" height="45">
-                                                    <p style="font-size: 1.2vw;">{{$cont->pro_name}}</p>
+                                                <a href="{{route('company.show', $cont->com_id)}}" class="text-dark" style="text-decoration: none;">
+                                                    <img src="{{Storage::disk('s3')->url('companies_pics/'.$cont->com_image)}}" class="img-fluid rounded-circle float-left" alt="" width="60" height="60">
+                                                    <p style="font-size: 1.2vw;">{{$cont->com_name}} <small class="text-muted" style="font-size: 0.7vw;"> {{$cont->location}} <i class="fas fa-map-marker-alt mr-2"></i></small></p>
+                                                    <small class="text-muted">{{date_format(new DateTime($cont->created_at), 'F d Y - h:m a')}}</small>
                                                 </a>
                                             </div>
                                         @endforeach
