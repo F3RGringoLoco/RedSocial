@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use App\Contact;
 use App\Company;
 use DB;
@@ -33,6 +34,14 @@ class HomeController extends Controller
                         ->whereIn('com_id', $contacts)
                         ->select('com_id', 'com_name', 'society', 'sector', 'property', 'location', 'com_image', 'created_at')
                         ->get();
+
+        $prof = DB::table('profesionals')
+                ->where('user_id', Auth::id())
+                ->select('name', 'image')
+                ->first();
+
+        Session::put('user_name', $prof->name);
+        Session::put('user_image', $prof->image);
 
         return view('home', compact('requests'));
     }

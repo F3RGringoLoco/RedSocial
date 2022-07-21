@@ -73,8 +73,12 @@
                     <div class="card-body">
                         <canvas id="Donut"></canvas>
                     </div>
-                    <div class="card-footer">
-                        <small class="text-muted">Last updated 3 mins ago</small>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <canvas id="Donut1"></canvas>
                     </div>
                 </div>
             </div>
@@ -83,18 +87,12 @@
                     <div class="card-body">
                         <canvas id="Polar"></canvas>    
                     </div>
-                    <div class="card-footer">
-                        <small class="text-muted">Last updated 3 mins ago</small>
-                    </div>
                 </div>
             </div>
             <div class="col">
                 <div class="card h-100">
                     <div class="card-body">
                         <canvas id="Radar"></canvas>     
-                    </div>
-                    <div class="card-footer">
-                        <small class="text-muted">Last updated 3 mins ago</small>
                     </div>
                 </div>
             </div>
@@ -110,16 +108,33 @@
     new Chart(document.getElementById("Donut"), {
               type: 'doughnut',
               data: {
-                labels: ["Total Carpetas", "Ambiente", "Archivos"],
+                labels: ["Sigo", "Seguidores"],
                 datasets: [{
-                  backgroundColor: ["#2b5797", "#b91d47", "rgb(255, 205, 86)'"],
-                  data: [2,1,29]
+                  backgroundColor: ["#2b5797", "#b91d47"],
+                  data: [3,4]
                 }]
               },
               options: {
                 title: {
                   display: true,
-                  text: 'Datos estadísticos'
+                  text: 'Perfil Profesional'
+                }
+              }
+          });
+
+    new Chart(document.getElementById("Donut1"), {
+              type: 'doughnut',
+              data: {
+                labels: ["Sigue", "Seguidores"],
+                datasets: [{
+                  backgroundColor: ["#2b5797", "#b91d47"],
+                  data: [10,7]
+                }]
+              },
+              options: {
+                title: {
+                  display: true,
+                  text: 'Perfil Empresa'
                 }
               }
           });
@@ -134,7 +149,7 @@
                 ],
                 datasets: [{
                   label: 'My First Dataset',
-                  data: [21, 2, 77],
+                  data: [67, 38, 29],
                   backgroundColor: [
                     'rgb(255, 99, 132)',
                     'rgb(75, 192, 192)',
@@ -149,10 +164,10 @@
     new Chart(document.getElementById("Radar"), {
               type: 'radar',
               data: {
-                labels: ['Descargas','Cargados','Eliminados','Busquedas'],
+                labels: ['Publicaciones','Me gusta','Compartidos','Busquedas'],
                 datasets: [{
-                  label: 'Dic/2021',
-                  data: [65, 81, 90, 81],
+                  label: 'Datos',
+                  data: [2, 4, 20, 13],
                   fill: true,
                   backgroundColor: 'rgba(255, 99, 132, 0.2)',
                   borderColor: 'rgb(255, 99, 132)',
@@ -160,16 +175,6 @@
                   pointBorderColor: '#fff',
                   pointHoverBackgroundColor: '#fff',
                   pointHoverBorderColor: 'rgb(255, 99, 132)'
-                }, {
-                  label: 'Jan/2022',
-                  data: [28, 48, 52, 60],
-                  fill: true,
-                  backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                  borderColor: 'rgb(54, 162, 235)',
-                  pointBackgroundColor: 'rgb(54, 162, 235)',
-                  pointBorderColor: '#fff',
-                  pointHoverBackgroundColor: '#fff',
-                  pointHoverBorderColor: 'rgb(54, 162, 235)'
                 }]
               },
               options: {

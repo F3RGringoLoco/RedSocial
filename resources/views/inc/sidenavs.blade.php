@@ -4,7 +4,7 @@
         <ul class="list-group list-group-flush">
             @if (Auth::check())
                     <a href="#" class="list-group-item list-group-item-action disabled">
-                        <img src="https://d2qp0siotla746.cloudfront.net/img/use-cases/profile-picture/template_0.jpg" class="img-fluid rounded-circle float-left" alt="" width="35" height="35">
+                        <img src="{{Session::get('user_image') != null ? Storage::disk('s3')->url('profesionals_pics/'.Session::get('user_image')) : 'https://www.pavilionweb.com/wp-content/uploads/2017/03/man-300x300.png'}}" class="img-fluid rounded-circle float-left" alt="" width="40" height="40">
                         <h3 class="text-primary">Menu</h3>
                     </a>
                     <a href="{{route('home')}}" class="list-group-item list-group-item-action">Inicio</a>

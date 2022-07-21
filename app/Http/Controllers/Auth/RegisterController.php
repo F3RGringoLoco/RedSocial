@@ -86,7 +86,7 @@ class RegisterController extends Controller
         app('App\Http\Controllers\TraitsRecombeeController')->addUser($str);
         app('App\Http\Controllers\TraitsProfController')->addUser($str);
 
-        Profesional::create([
+        $prof = Profesional::create([
             'name' =>  $data['name'],
             'birth' =>  $data['birth'],
             'phone' => $data['phone'],
@@ -94,6 +94,9 @@ class RegisterController extends Controller
             'user_id' => $user->id,
             'image' => $fileNameToStore,
         ]);
+
+        $str = strval($prof->id);
+        app('App\Http\Controllers\TraitsProfController')->addItem($str);
 
         return $user;
     }
